@@ -1,0 +1,21 @@
+import { Button, VerticalBox, LineEdit, HorizontalBox, } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    in-out property <string> input;
+    in-out property <string> output;
+
+    callback process-input(string);
+
+    VerticalBox {
+        spacing: 16px;
+
+ 
+        Button {
+            text: "Process";
+            clicked => { root.process-input(root.input); }
+        }
+        Text {
+            text: root.output;
+        }
+    }
+}

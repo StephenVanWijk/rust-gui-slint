@@ -1,0 +1,2 @@
+[env]
+UNRESOLVED_ENV_VAR = "dummy_value"  # Helps rust-analyzer resolve the macro

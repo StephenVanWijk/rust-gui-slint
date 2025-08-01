@@ -1,0 +1,7 @@
+{
+    "rust-analyzer.cargo.runBuildScripts": true,
+    "rust-analyzer.checkOnSave.command": "clippy",
+    "rust-analyzer.check.extraEnv": {
+        "CARGO": "cargo"
+    }
+}
