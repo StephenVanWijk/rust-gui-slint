@@ -1,0 +1,16 @@
+import { ComboBox, VerticalBox } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    in property <[string]> salutation-items: [];
+    in-out property <int> salutation-index: 0;
+
+    // Use a layout to arrange them
+    VerticalBox {
+        spacing: 8px;
+
+        ComboBox {
+            width: 100px;
+            model: root.salutation-items;
+        }
+    }
+}

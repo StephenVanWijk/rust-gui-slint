@@ -1,14 +1,19 @@
 pub mod address_init;
+pub mod address_oper;
 
 slint::include_modules!();
 
 fn main() -> Result<(), slint::PlatformError> {
+    let address_infterface = address_init::Address::address_init();
+    println!("Address initialized: {:?}\n", address_infterface);
+
     let app = AppWindow::new()?;
-    let app_weak = app.as_weak();
-    app.on_process_input(move |input| {
-        if let Some(app) = app_weak.upgrade() {
-            app.set_output(format!("You entered: {}", input).into());
-        }
-    });
+
+    // Populate the ComboBox with data
+    app.set_combo_items(slint::ModelRc::from([
+        "De heer ".into(),
+        "Mevrouw ".into(),
+    ]));
+
     app.run()
 }
