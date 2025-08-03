@@ -10,10 +10,10 @@ fn main() -> Result<(), slint::PlatformError> {
     let app = AppWindow::new()?;
 
     // Populate the ComboBox with data
-    app.set_combo_items(slint::ModelRc::from([
-        "De heer ".into(),
-        "Mevrouw ".into(),
-    ]));
+    // app.set_combo_items(slint::ModelRc::from([
+    //     "De heer ".into(),
+    //     "Mevrouw ".into(),
+    // ]));
 
     app.run()
 }
