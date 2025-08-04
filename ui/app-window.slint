@@ -1,18 +1,36 @@
-import { Button, VerticalBox } from "std-widgets.slint";
+import { Button, VerticalBox, ListView, CheckBox, LineEdit } from "std-widgets.slint";
 
+struct TodoItem{
+    text: string, 
+    checked: bool,
+}
 export component AppWindow inherits Window {
-    in-out property <int> counter: 42;
-    callback request-increase-value();
-    VerticalBox {
-        Text {
-            text: "Counter: \{root.counter}";
-        }
+    in property <[TodoItem]> todos;
+    callback add-todo(string);
 
-        Button {
-            text: "Increase value";
-            clicked => {
-                root.request-increase-value();
+    min-width: 300px;
+    title: "Todo List";
+
+    VerticalBox {
+        HorizontalLayout {
+            spacing: 4px;
+            le := LineEdit {
+                placeholder-text: "Todo";
+            }
+            Button {
+                text: "Add";
+                clicked => {
+                    // Call the callback to add a new todo item
+                    root.add-todo(le.text)
+                }   
             }
         }
-    }
+        ListView{
+            for todo in root.todos:
+                CheckBox {
+                    text: todo.text;
+                    checked: todo.checked;
+                }
+        }        
+    }    
 }

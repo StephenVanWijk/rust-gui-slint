@@ -2,30 +2,28 @@
 // starting the app via file manager. Ignored on other platforms.
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::error::Error;
+use std::{error::Error, rc::Rc};
 
 slint::include_modules!();
-
-slint::slint!{
-    import { TextEdit } from "std-widgets.slint";
-
-    // The exported component should inherit from Window to avoid the deprecation warning.
-    export component ExportedComponent inherits Window {
-        TextEdit {}
-    }
-}
 
 fn main() -> Result<(), Box<dyn Error>> {
     let ui = AppWindow::new()?;
 
-    ui.on_request_increase_value({
-        let ui_handle = ui.as_weak();
-        move || {
-            let ui = ui_handle.unwrap();
-            ui.set_counter(ui.get_counter() + 1);
-        }
-    });
+    let model = Rc::new(slint::VecModel::from(
+        vec![
+            // TodoItem{ text: "Ghi".into(), checked: false,},
+            // TodoItem{ text: "Jki".into(), checked: false,},
+        ]
+    ));
 
+    {   
+        let model = model.clone(); 
+        ui.on_add_todo(move |s|{
+        model.push(TodoItem{ text: s, checked: false });
+        });
+    }
+
+    ui.set_todos(Into::into(model));
     ui.run()?;
 
     Ok(())
