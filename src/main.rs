@@ -7,23 +7,22 @@ use std::{error::Error, rc::Rc};
 slint::include_modules!();
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let ui = AppWindow::new()?;
+    let ui  = AppWindow::new()?;
 
-    let model = Rc::new(slint::VecModel::from(
+    let model_a: Rc<slint::VecModel<_>> = Rc::new(slint::VecModel::from(
         vec![
-            // TodoItem{ text: "Ghi".into(), checked: false,},
-            // TodoItem{ text: "Jki".into(), checked: false,},
+
         ]
     ));
 
     {   
-        let model = model.clone(); 
+        let model_b: Rc<slint::VecModel<_>> = model_a.clone(); 
         ui.on_add_todo(move |s|{
-        model.push(TodoItem{ text: s, checked: false });
+        model_b.push(TodoItem{ text: s, checked: false });
         });
     }
 
-    ui.set_todos(Into::into(model));
+    ui.set_todos(Into::into(model_a));
     ui.run()?;
 
     Ok(())

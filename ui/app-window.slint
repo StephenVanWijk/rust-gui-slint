@@ -4,33 +4,63 @@ struct TodoItem{
     text: string, 
     checked: bool,
 }
+
 export component AppWindow inherits Window {
     in property <[TodoItem]> todos;
     callback add-todo(string);
 
     min-width: 300px;
     title: "Todo List";
+    // Slint does not currently provide a built-in MenuBar component as of 2024.
+    // You can create a custom menu bar using HorizontalLayout and Menu/MenuItem components if needed.
+    // Example placeholder for a custom menu bar:
 
-    VerticalBox {
-        HorizontalLayout {
-            spacing: 4px;
-            le := LineEdit {
-                placeholder-text: "Todo";
+    ContextMenuArea {
+        Menu {
+            MenuItem {
+                title: @tr("Cut");
+                activated => { debug("Cut"); }
             }
-            Button {
-                text: "Add";
-                clicked => {
-                    // Call the callback to add a new todo item
-                    root.add-todo(le.text)
-                }   
+            MenuItem {
+                title: @tr("Copy");
+                activated => { debug("Copy"); }
+            }
+            MenuItem {
+                title: @tr("Paste");
+                activated => { debug("Paste"); }
+            }
+            MenuSeparator {}
+            Menu {
+                title: @tr("Find");
+                MenuItem {
+                    title: @tr("Find Next");
+                }
+                MenuItem {
+                    title: @tr("Find Previous");
+                }
             }
         }
-        ListView{
-            for todo in root.todos:
-                CheckBox {
-                    text: todo.text;
-                    checked: todo.checked;
+        VerticalBox {
+            HorizontalLayout {
+                spacing: 4px;
+                le := LineEdit {
+                    placeholder-text: "Todo";
                 }
-        }        
-    }    
+                Button {
+                    text: "Add";
+                    clicked => {
+                        // Call the callback to add a new todo item
+                        root.add-todo(le.text)
+                    }   
+                }
+            }
+            ListView{
+                for todo in root.todos:
+                    CheckBox {
+                        text: todo.text;
+                        checked: todo.checked;
+                    }
+            }        
+        }    
+    }
 }
