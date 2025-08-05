@@ -1,37 +1,36 @@
-import { Button, VerticalBox, ListView, CheckBox, LineEdit } from "std-widgets.slint";
-
-struct TodoItem{
-    text: string, 
-    checked: bool,
-}
-
+import { LineEdit, Button, VerticalBox, StandardButton } from "std-widgets.slint";
 export component AppWindow inherits Window {
-    in property <[TodoItem]> todos;
-    callback add-todo(string);
+    in property <string> results: "";
+    callback divide-income(string);
+    in-out property <bool> open_curtain;
+    animate background { duration: 800ms; }
 
-    min-width: 300px;
-    title: "Todo List";
-    // Slint does not currently provide a built-in MenuBar component as of 2024.
-    // You can create a custom menu bar using HorizontalLayout and Menu/MenuItem components if needed.
-    // Example placeholder for a custom menu bar:
-
-    ContextMenuArea {
+    MenuBar {
         Menu {
+            title: @tr("File");
             MenuItem {
-                title: @tr("Cut");
-                activated => { debug("Cut"); }
+                title: @tr("New");
+                activated => { file-new(); }
             }
             MenuItem {
+                title: @tr("Open");
+                activated => { file-open(); }
+            }
+        }
+        Menu {
+            title: @tr("Edit");
+            MenuItem {
                 title: @tr("Copy");
-                activated => { debug("Copy"); }
             }
             MenuItem {
                 title: @tr("Paste");
-                activated => { debug("Paste"); }
             }
             MenuSeparator {}
             Menu {
                 title: @tr("Find");
+                MenuItem {
+                    title: @tr("Find in document...");
+                }
                 MenuItem {
                     title: @tr("Find Next");
                 }
@@ -40,27 +39,25 @@ export component AppWindow inherits Window {
                 }
             }
         }
-        VerticalBox {
-            HorizontalLayout {
-                spacing: 4px;
-                le := LineEdit {
-                    placeholder-text: "Todo";
-                }
-                Button {
-                    text: "Add";
-                    clicked => {
-                        // Call the callback to add a new todo item
-                        root.add-todo(le.text)
-                    }   
-                }
-            }
-            ListView{
-                for todo in root.todos:
-                    CheckBox {
-                        text: todo.text;
-                        checked: todo.checked;
-                    }
-            }        
-        }    
+    }
+    callback file-new();
+    callback file-open();
+
+    // ... actual window content goes here
+        background: #313e50;
+
+    GridLayout {
+
+    export component Example inherits Dialog {
+        Text {
+        text: "This is a dialog box";
+        }
+        StandardButton { kind: ok; }
+        StandardButton { kind: cancel; }
+        Button {
+        text: "More Info";
+        dialog-button-role: action;
+        }
+}
     }
 }
